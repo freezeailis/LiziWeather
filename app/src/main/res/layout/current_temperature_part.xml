@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/currentTemperature_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" --°"
+        android:textColor="#DAE9F8"
+        android:textSize="100sp"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/maxMinTemperature_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="   --°/--°"
+        android:textColor="#DAE9F8"
+        android:textSize="20sp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

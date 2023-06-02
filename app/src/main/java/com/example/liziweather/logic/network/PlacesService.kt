@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface PlacesService {
     /**
-     *根据地区名称获取包含经纬度的地区消息
+     * 根据地区名称获取包含经纬度的地区消息
      *@author aris
      *@time 2023/4/25 21:16
     */
