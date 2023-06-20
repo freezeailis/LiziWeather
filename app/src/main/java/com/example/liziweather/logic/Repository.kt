@@ -1,9 +1,7 @@
 package com.example.liziweather.logic
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
-import com.example.liziweather.logic.dao.PlaceDao
+import com.example.liziweather.logic.dao.PrePlaceDao
 import com.example.liziweather.logic.model.Place
 import com.example.liziweather.logic.model.WeatherInfo
 import com.example.liziweather.logic.network.LiziWeatherNetwork
@@ -48,8 +46,9 @@ object Repository {
             }
     }
 
+    // 下述三个函数用于 上次显示城市 的缓存的读取和保存
     fun getPlaceCache() = liveDataWithExceptionHandle<Place>(Dispatchers.IO){
-        val place = PlaceDao.getPlace()
+        val place = PrePlaceDao.getCache()
         if (place == null){
             Result.failure(Exception("return value is null"))
         } else {
@@ -58,10 +57,13 @@ object Repository {
     }
 
     fun savePlaceCache(place: Place){
-        PlaceDao.savePlace(place)
+        PrePlaceDao.saveCache(place)
     }
 
-    fun hasPlaceCache(): Boolean = PlaceDao.hasPlaceCache()
+    fun hasPlaceCache(): Boolean = PrePlaceDao.hasCache()
+
+    // 下述三个函数用于 关注城市(不止一个) 的缓存的读取和保存
+
 
     private fun <T> liveDataWithExceptionHandle(dispatcher: CoroutineDispatcher, block: suspend () -> Result<T>) =
         liveData<Result<T>>(dispatcher){

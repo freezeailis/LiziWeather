@@ -2,4 +2,5 @@
     <string name="app_name">LiziWeather</string>
     <string name="temperature_sign">℃</string>
     <string name="temperature_simple_sign">°</string>
+    <string name="fifteenTitle">15天趋势预报</string>
 </resources>

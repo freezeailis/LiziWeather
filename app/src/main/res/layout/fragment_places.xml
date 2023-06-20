@@ -6,13 +6,6 @@
     android:background="?android:windowBackground"
     tools:context=".ui.place.PlacesFragment">
 
-    <ImageView
-        android:id="@+id/bgImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/bg_place"/>
-
     <LinearLayout
         android:id="@+id/searchLinearLayout"
         android:layout_width="match_parent"
@@ -21,11 +14,14 @@
         android:layout_alignParentTop="true">
         <EditText
             android:layout_margin="7dp"
-            android:id="@+id/searchTextView"
+            android:id="@+id/search_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:singleLine="true"
             android:minHeight="48dp"
             android:layout_weight="9"
+            android:imeOptions="actionSearch"
             android:hint="type in searching place"/>
 
         <ImageView
@@ -39,7 +35,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/placesList_rv"
         android:layout_margin="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

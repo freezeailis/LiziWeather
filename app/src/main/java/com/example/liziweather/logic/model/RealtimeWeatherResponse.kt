@@ -56,7 +56,7 @@ data class RealtimeWeatherResponse(
     )
 
     data class Wind(
-        val direction: Int,
+        val direction: Double,
         val speed: Double
     )
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.weather.FifteenDaysActivity"
+    android:fitsSystemWindows="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/fifteenTitle"
+        android:textSize="32sp"/>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/weatherDesColumn_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include
+                    layout="@layout/single_day_info_column"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <com.example.liziweather.ui.selfView.TemperaturePlotView
+                android:id="@+id/temperaturesPlotView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                app:textSize="17sp"
+                app:verticalGapSize="180dp"
+                app:horizontalGapSize="80dp"
+                app:lineColor="#30000000"
+                app:textColor="#000000"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

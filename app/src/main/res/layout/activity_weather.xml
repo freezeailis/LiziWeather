@@ -1,40 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ui.weather.WeatherActivity">
+    <LinearLayout
+        android:id="@+id/background_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        android:background="@drawable/bg_cloudy">
+        <include
+            android:id="@+id/navigation_part"
+            layout="@layout/navigation_part"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
 
-    <ScrollView
-        android:id="@+id/sv"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srlAccentColor="@color/white"/>
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/currentTemperature_part"
+                        layout="@layout/current_temperature_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="125dp"
+                        android:layout_marginBottom="200dp"/>
+
+                    <include
+                        android:id="@+id/futureDaysTemperature_part"
+                        layout="@layout/future_days_temperature_part" />
+
+                    <include
+                        android:id="@+id/lifeIndex_part"
+                        layout="@layout/life_index_part" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_cloudy"
+        android:layout_gravity="start"
+        android:clickable="true"
+        android:focusable="true"
         android:fitsSystemWindows="true">
-
-        <LinearLayout
+        <fragment
+            android:id="@+id/placeFragment"
+            android:name="com.example.liziweather.ui.place.PlacesFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:layout="@layout/fragment_places">
 
-            <include
-                layout="@layout/current_temperature_part"
-                android:id="@+id/currentTemperature_part"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="180sp"/>
+        </fragment>
+    </FrameLayout>
 
-            <include layout="@layout/future_days_temperature_part"
-                android:id="@+id/futureDaysTemperature_part"/>
-
-            <include layout="@layout/life_index_part"
-                android:id="@+id/lifeIndex_part"/>
-
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -9,12 +9,15 @@ import java.security.KeyStore.LoadStoreParameter
 import kotlin.math.ln
 
 class WeatherViewModel: ViewModel() {
-    var location: Location = Location(0.0, 0.0)
-    var placeName: String = ""
-
     // 用于观察location的变化
     private val locationLiveData = MutableLiveData<Location>()
 
+
+    /**
+     *  根据 getWeatherInfo 传入的 location 所对应的经纬度坐标请求当日天气信息
+     *@author aris
+     *@time 2023/6/20 15:10
+    */
     val weatherInfo = Transformations.switchMap(locationLiveData){
         Repository.getWeatherInfo(it.lng, it.lat)
     }

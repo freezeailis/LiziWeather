@@ -24,14 +24,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/future_ll">
-                <include layout="@layout/single_day_info_line"
+                <include layout="@layout/single_day_info_row"
                     android:visibility="visible"/>
-                <include layout="@layout/single_day_info_line"
+                <include layout="@layout/single_day_info_row"
                     android:visibility="visible"/>
-                <include layout="@layout/single_day_info_line"
+                <include layout="@layout/single_day_info_row"
                     android:visibility="visible"/>
             </LinearLayout>
             <Button
+                android:id="@+id/fifteenDays_btn"
                 android:layout_margin="10sp"
                 android:background="@drawable/radius_button"
                 android:layout_width="match_parent"

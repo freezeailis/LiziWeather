@@ -33,8 +33,6 @@ object WeatherDescriptionUtils {
         "DUST" to Sky("浮尘", R.drawable.ic_fog, R.drawable.bg_fog)
     )
 
-    val idx2dayDes = arrayOf("今天  ", "明天  ", "后天  ")
-
     fun aqi2des(aqi: DailyTimeWeatherResponse.Aqi): String = when{
         aqi.avg.chn < 50 -> "优"
         aqi.avg.chn < 100 -> "良"
