@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -15,6 +16,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.liziweather.R
@@ -24,9 +26,10 @@ import com.example.liziweather.logic.model.Location
 import com.example.liziweather.logic.model.Place
 import com.example.liziweather.logic.model.WeatherInfo
 import com.example.liziweather.makeToast
+import java.util.*
 
 class WeatherActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWeatherBinding
+    lateinit var binding: ActivityWeatherBinding
     private val viewModel by lazy {
         ViewModelProvider(this).get(WeatherViewModel::class.java)
     }
@@ -44,7 +47,10 @@ class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWeatherBinding.inflate(layoutInflater)
+        LayoutInflater.from(this).inflate(R.layout.fragment_places, this.findViewById(R.id.drawerLayout), false)
         setContentView(binding.root)
+
+        Log.d("WeatherActivity", "OnCreate")
 
         // 设置沉浸式
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -53,9 +59,9 @@ class WeatherActivity : AppCompatActivity() {
         windowInsetsControllerCompat.isAppearanceLightNavigationBars = false
 
         // extract info from intent
-        val loc = Location(intent.getDoubleExtra("lng", 0.0),
+        viewModel.location = Location(intent.getDoubleExtra("lng", 0.0),
             intent.getDoubleExtra("lat", 0.0))
-        val placeName = intent.getStringExtra("placeName") ?: ""
+        viewModel.placeName = intent.getStringExtra("placeName") ?: ""
         // 注册 drawerLayout 的事件
 //        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         binding.drawerLayout.addDrawerListener(object :DrawerLayout.DrawerListener{
@@ -76,18 +82,18 @@ class WeatherActivity : AppCompatActivity() {
         binding.navigationPart.navBtn.setOnClickListener { binding.drawerLayout.openDrawer(GravityCompat.START) }
 
         binding.futureDaysTemperaturePart.fifteenDaysBtn.setOnClickListener {
-            FifteenDaysActivity.startActivity(this, loc)
+            FifteenDaysActivity.startActivity(this, viewModel.location)
         }
 
         // 请求天气数据
-        viewModel.getWeatherInfo(loc)
+        viewModel.getWeatherInfo(viewModel.location)
 
         // 注册对天气信息变化的回调
         // 在回调中更新天气数据
         viewModel.weatherInfo.observe(this, Observer{ weatherInfoRes->
             val weatherInfo = weatherInfoRes.getOrNull()
             if (weatherInfo != null){
-                showWeatherInfo(weatherInfo, placeName)
+                showWeatherInfo(weatherInfo, viewModel.placeName)
                 if(binding.smartRefreshLayout.isRefreshing){
                     binding.smartRefreshLayout.finishRefresh(1000)
                 }
@@ -101,8 +107,11 @@ class WeatherActivity : AppCompatActivity() {
         })
 
         binding.smartRefreshLayout.setOnRefreshListener {
-            viewModel.getWeatherInfo(loc)
+            refreshPage()
         }
+
+        supportFragmentManager.findFragmentById(R.id.placeFragment)
+
 
     }
 
@@ -117,7 +126,7 @@ class WeatherActivity : AppCompatActivity() {
 
         // 更新 currentTemperaturePart
         val currentTemperaturePart = binding.currentTemperaturePart
-        val curTemperatureText = realtimeRes.realtime.temperature.toString()
+        val curTemperatureText = realtimeRes.realtime.temperature.toInt().toString()
         val maxMinTemperatureText = WeatherDescriptionUtils.skycon2desInfo[realtimeRes.realtime.skycon]?.des + " " +
                 dailyRes.daily.temperature[0].min.toInt().toString() + getString(R.string.temperature_simple_sign) +
                 dailyRes.daily.temperature[0].max.toInt().toString() + getString(R.string.temperature_simple_sign)
@@ -149,5 +158,17 @@ class WeatherActivity : AppCompatActivity() {
         lifeIndexPart.coldRiskTv.text = dailyRes.daily.life_index.coldRisk[0].desc
         lifeIndexPart.dressTv.text = dailyRes.daily.life_index.dressing[0].desc
         lifeIndexPart.ultravioletTv.text = dailyRes.daily.life_index.ultraviolet[0].desc
+    }
+
+    fun refreshPage(location: Location?=null, placeName: String?=null){
+        placeName?.let {
+            viewModel.placeName = placeName
+        }
+        if (location != null){
+            viewModel.location = location
+            viewModel.getWeatherInfo(location)
+        } else {
+            viewModel.getWeatherInfo(viewModel.location)
+        }
     }
 }

@@ -38,8 +38,7 @@
         android:id="@+id/placesList_rv"
         android:layout_margin="7dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchLinearLayout"
-        android:visibility="gone"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchLinearLayout" />
 
 </RelativeLayout>

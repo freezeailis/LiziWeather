@@ -5,13 +5,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.liziweather.logic.Repository
 import com.example.liziweather.logic.model.Location
-import java.security.KeyStore.LoadStoreParameter
-import kotlin.math.ln
 
 class WeatherViewModel: ViewModel() {
     // 用于观察location的变化
     private val locationLiveData = MutableLiveData<Location>()
-
+    var placeName = ""
+    var location: Location = Location(0.0, 0.0)
 
     /**
      *  根据 getWeatherInfo 传入的 location 所对应的经纬度坐标请求当日天气信息

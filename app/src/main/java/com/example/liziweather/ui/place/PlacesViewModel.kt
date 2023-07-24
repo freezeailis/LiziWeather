@@ -1,5 +1,6 @@
 package com.example.liziweather.ui.place
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -10,7 +11,7 @@ import com.example.liziweather.logic.model.Place
 class PlacesViewModel: ViewModel(){
 
     // 缓存
-    val responsePlacesList = ArrayList<Place>()
+    val responsePlacesList = java.util.ArrayList<Place>()
     // 根据 query 的变化请求该关键字对应的城市信息
     private val keywordQueryLiveData = MutableLiveData<String>()
     // placesLiveDat里面的value更新时执行block里面的内容
@@ -28,6 +29,7 @@ class PlacesViewModel: ViewModel(){
     // 更新placesLiveData里面的value
     fun getPlacesInfo(query: String){
         keywordQueryLiveData.value = query
+
     }
 
 
@@ -55,19 +57,58 @@ class PlacesViewModel: ViewModel(){
 
 
     // 缓存
+    private val followedPlacesSet = HashSet<Place>()
     val followedPlacesList = ArrayList<Place>()
+//    val followedPlacesList: ArrayList<Place> get() {
+//        val res = ArrayList<Place>()
+//        res.addAll(followedPlacesSet)
+//        return res
+//    }
     // 请求 关注城市列表
     private val placesListQueryLiveData = MutableLiveData<Any?>()
-
-    val followedPlacesLiveData: LiveData<Result<List<Place>>> = Transformations.switchMap(placesListQueryLiveData){
-
+    /**
+     *  请求 关注的城市列表 的信息
+     *@author aris
+     *@time 2023/6/21 19:24
+    */
+    val followedPlacesLiveData: LiveData<Result<ArrayList<Place>>> = Transformations.switchMap(placesListQueryLiveData){
+        Repository.getFollowedPlacesListCache()
     }
+
+    fun hasPlacesListCache() = Repository.hasFollowedPlacesListCache()
+
     fun getPlacesListCache(){
         placesListQueryLiveData.value = placesListQueryLiveData.value
     }
 
     fun savePlaceCacheList(){
-
+        Log.d("followed", "save")
+        Repository.saveFollowedPlacesListCache(followedPlacesList)
     }
+
+    fun addPlace2FollowedCache(place: Place): Boolean{
+        if (place !in followedPlacesSet){
+            followedPlacesList.add(place)
+            followedPlacesSet.add(place)
+            return true
+        }
+        return false
+    }
+
+    fun removePlaceFromFollowedCache(place: Place): Boolean{
+        if (place in followedPlacesSet){
+            followedPlacesSet.remove(place)
+            followedPlacesList.remove(place)
+            return true
+        }
+        return false
+    }
+
+    fun clearFollowedCache(){
+        followedPlacesSet.clear()
+        followedPlacesList.clear()
+    }
+
+    fun ifInFollowedList(place: Place) = place in followedPlacesSet
 
 }

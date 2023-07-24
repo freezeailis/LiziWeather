@@ -38,7 +38,6 @@ class TemperaturePlotView @JvmOverloads constructor(context: Context, attrs: Att
         mPaint.textAlign = Paint.Align.CENTER
 
         attrs?.run {
-            View(context, attrs)
             // read attrs from xml file
             val a = context.obtainStyledAttributes(attrs, R.styleable.TemperaturePlotView)
             mPaint.textSize = a.getDimension(R.styleable.TemperaturePlotView_textSize, mPaint.textSize)
@@ -72,7 +71,7 @@ class TemperaturePlotView @JvmOverloads constructor(context: Context, attrs: Att
         if (layoutParams.width == LayoutParams.WRAP_CONTENT && layoutParams.height == LayoutParams.WRAP_CONTENT){
             setMeasuredDimension(actuallyWidthSize, actuallyHeightSize)
         } else if (layoutParams.width == LayoutParams.WRAP_CONTENT) {
-            setMeasuredDimension(actuallyWidthSize, widthSize)
+            setMeasuredDimension(actuallyWidthSize, heightSize)
         }
     }
 
@@ -131,7 +130,4 @@ class TemperaturePlotView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
 
-    private fun drawLine(pointSet: IntArray){
-
-    }
 }

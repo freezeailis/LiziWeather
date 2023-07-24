@@ -29,7 +29,7 @@ data class RealtimeWeatherResponse(
         val pressure: Double,
         val skycon: String,
         val status: String,
-        val temperature: Int,
+        val temperature: Double,
         val visibility: Double,
         val wind: Wind
     )
